@@ -13,6 +13,9 @@ public class LevelSystem : MonoBehaviour
     public int xp_difference_next_level;
     public int total_xp_difference;
 
+    public float fill_amount;
+    public float reverse_fill_amount;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,5 +43,13 @@ public class LevelSystem : MonoBehaviour
         {
             current_level = temp_cur_level;
         }
+
+        xp_for_next_level = base_XP * (current_level + 1) * (current_level + 1);
+        xp_difference_next_level = xp_for_next_level - current_xp;
+        total_xp_difference = xp_for_next_level - (base_XP * current_level * current_level);
+
+        fill_amount = (float) xp_difference_next_level / (float) total_xp_difference;
+        reverse_fill_amount = 1 - fill_amount;
+
     }
 }
