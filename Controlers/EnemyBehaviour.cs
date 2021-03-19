@@ -44,9 +44,13 @@ public class EnemyBehaviour : MonoBehaviour
         }
 
         float distance = Vector3.Distance(transform.position, target_player.position);
-        if (distance <= look_radius) 
-        { 
-            
+        if (distance <= look_radius)
+        {
+            MoveAndAttack();
+        }
+        else 
+        {
+            walking = false;
         }
     }
 
@@ -55,7 +59,8 @@ public class EnemyBehaviour : MonoBehaviour
         transform.LookAt(target_player.position);
 
         float step = speed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, target_player.position, step);
+        if (Vector3.Distance(transform.position, target_player.position) > attack_radius)
+            transform.position = Vector3.MoveTowards(transform.position, target_player.position, step);
 
         // TODO simplify
         if (Vector3.Distance(transform.position, target_player.position) <= attack_radius)
