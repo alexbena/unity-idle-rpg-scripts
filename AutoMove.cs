@@ -9,14 +9,16 @@ public class AutoMove : MonoBehaviour
     public GameObject player;
     int current = -1;
     public float speed;
-    float WP_radius = 0.5f;
+    float WP_radius = 1f;
 
     void Update()
     {
-        if(current != -1) { 
+        if(current != -1) {
+            transform.LookAt(waypoints[current].transform.position);
+
             float step = speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, waypoints[current].transform.position, step);
-
+            
             if (Vector3.Distance(transform.position, waypoints[current].transform.position) < WP_radius)
             {
                 current++;
