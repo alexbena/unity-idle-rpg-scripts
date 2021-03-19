@@ -48,14 +48,14 @@ public class LevelSystem : MonoBehaviour
     {
         current_xp += amount;
 
-        int temp_cur_level = (int)Mathf.Sqrt(current_xp / base_XP);
+        int temp_cur_level = (int)Mathf.Sqrt(current_xp / base_XP) + 1;
 
         if (current_level != temp_cur_level) 
         {
             current_level = temp_cur_level;
         }
 
-        xp_for_next_level = base_XP * (current_level + 1) * (current_level + 1);
+        xp_for_next_level = base_XP * current_level * current_level;
         xp_difference_next_level = xp_for_next_level - current_xp;
         total_xp_difference = xp_for_next_level - (base_XP * current_level * current_level);
 
