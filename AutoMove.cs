@@ -9,7 +9,7 @@ public class AutoMove : MonoBehaviour
     public GameObject player;
     int current = -1;
     public float speed;
-    float WP_radius = 0.4f;
+    float WP_radius = 0.5f;
 
     void Update()
     {
