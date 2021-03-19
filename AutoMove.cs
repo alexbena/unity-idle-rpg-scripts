@@ -7,36 +7,28 @@ public class AutoMove : MonoBehaviour
 
     public GameObject[] waypoints;
     public GameObject player;
-    int current = 0;
+    int current = -1;
     public float speed;
-    float WP_radius = 1;
+    float WP_radius = 0.4f;
 
     void Update()
     {
-        if (Vector3.Distance(waypoints[current].transform.position, transform.position) < WP_radius)
-        {
-            current = Random.Range(0, waypoints.Length);
-            if (current >= waypoints.Length)
+        if(current != -1) { 
+            float step = speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, waypoints[current].transform.position, step);
+
+            if (Vector3.Distance(transform.position, waypoints[current].transform.position) < WP_radius)
             {
-                current = 0;
+                current++;
+                if (current >= waypoints.Length) {
+                    current = -1;
+                }
             }
         }
-        transform.position = Vector3.MoveTowards(transform.position, waypoints[current].transform.position, Time.deltaTime * speed);
 
     }
 
-    void OnTriggerEnter(Collider n)
-    {
-        if (n.gameObject == player)
-        {
-            player.transform.parent = transform;
-        }
-    }
-    void OnTriggerExit(Collider n)
-    {
-        if (n.gameObject == player)
-        {
-            player.transform.parent = null;
-        }
+    public void Move() {
+        this.current = 0;
     }
 }
