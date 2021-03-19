@@ -57,13 +57,13 @@ public class LevelSystem : MonoBehaviour
 
         xp_for_next_level = base_XP * current_level * current_level;
         xp_difference_next_level = xp_for_next_level - current_xp;
-        total_xp_difference = xp_for_next_level - (base_XP * current_level * current_level);
+        total_xp_difference = xp_for_next_level - (base_XP * (current_level-1) * (current_level-1));
 
         fill_amount = (float) xp_difference_next_level / (float) total_xp_difference;
         reverse_fill_amount = 1 - fill_amount;
 
-        stat_points = 5 * current_level;
-        skill_points = 15 * current_level;
+        stat_points = 5 * (current_level - 1);
+        skill_points = 15 * (current_level - 1);
 
     }
 }

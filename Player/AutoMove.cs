@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// Automated ROUTES for player
 public class AutoMove : MonoBehaviour
 {
     public Dictionary<string, List<GameObject>> routes = new Dictionary<string, List<GameObject>>();
@@ -9,7 +11,7 @@ public class AutoMove : MonoBehaviour
     public GameObject player;
     int current = -1;
     public float speed;
-    float WP_radius = 1f;
+    float proximity_radius = 1f;
     private Animator anim;
 
 
@@ -31,7 +33,7 @@ public class AutoMove : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, active_route[current].transform.position, step);
             
             // TODO simplify
-            if (Vector3.Distance(transform.position, active_route[current].transform.position) < WP_radius)
+            if (Vector3.Distance(transform.position, active_route[current].transform.position) < proximity_radius)
             {
                 current++;
                 if (current >= active_route.Count) { 
