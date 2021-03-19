@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; //QUITAR
 
 public class LevelSystem : MonoBehaviour
 {
@@ -16,9 +17,17 @@ public class LevelSystem : MonoBehaviour
     public float fill_amount;
     public float reverse_fill_amount;
 
+    public int stat_points;
+    public int skill_points;
+
+    private Text ui_level;
+    private Text ui_fill_bar;
+
     // Start is called before the first frame update
     void Start()
     {
+        ui_level = GameObject.Find("UI_level").GetComponent<Text>();
+        ui_fill_bar = GameObject.Find("UI_fill_bar").GetComponent<Text>();
         InvokeRepeating("AddXP", 1f, 1f);
     }
 
@@ -31,6 +40,8 @@ public class LevelSystem : MonoBehaviour
     public void AddXP() 
     {
         CalculateLevel(5);
+        ui_level.text = "Level " + current_level;
+        ui_fill_bar.text = reverse_fill_amount.ToString();
     }
 
     void CalculateLevel(int amount) 
@@ -50,6 +61,9 @@ public class LevelSystem : MonoBehaviour
 
         fill_amount = (float) xp_difference_next_level / (float) total_xp_difference;
         reverse_fill_amount = 1 - fill_amount;
+
+        stat_points = 5 * current_level;
+        skill_points = 15 * current_level;
 
     }
 }
