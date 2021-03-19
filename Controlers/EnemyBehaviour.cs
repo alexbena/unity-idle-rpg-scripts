@@ -26,7 +26,7 @@ public class EnemyBehaviour : MonoBehaviour
     void Start()
     {
         this.anim = GetComponent<Animator>();
-        //target_player = 
+        target_player = PlayerManager.instance.player.transform;
     }
 
     // Update is called once per frame
