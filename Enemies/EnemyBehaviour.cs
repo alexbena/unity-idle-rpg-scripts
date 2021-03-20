@@ -11,16 +11,15 @@ public class EnemyBehaviour : Interactable
     private Animator anim;
     private bool walking;
 
+    [Header("STATS")] // This need base class for enemies
+    public bool dead;
     public float look_radius;
     public float attack_radius;
     public float speed;
-
-    [Header("STATS")] // This need base class for enemies
-    public bool dead;
-
-    // Attack
     public float next_attack;
     public float attack_rate = 1f;
+    public int max_health;
+    public int cur_health;
 
     // Target
     Transform target_player;
@@ -93,6 +92,22 @@ public class EnemyBehaviour : Interactable
     {
         base.Interact();
 
+    }
+
+
+    public bool WillDie(int damage)
+    {
+        return (cur_health - damage) <= 0 ? true : false;
+    }
+
+    public void Die()
+    {
+        dead = true;
+    }
+
+    public bool IsAlive()
+    {
+        return !dead;
     }
 
 

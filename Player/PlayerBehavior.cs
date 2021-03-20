@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +18,9 @@ public class PlayerBehavior : Interactable
     // GUI MAKE THIS INTO CONTROLLER
     private Text ui_level;
 
-    Transform target_enemy;
+    // Enemy Focus
+    GameObject[] enemies;
+    GameObject actual_target;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +33,32 @@ public class PlayerBehavior : Interactable
     void Update()
     {
         ui_level.text = "Level " + player_info.current_level;
-        
+
+        if (actual_target == null)
+        {
+            actual_target = GetNearEnemy();
+        }
+        else if (!actual_target.GetComponent<EnemyBehaviour>().IsAlive()) // Mantain focus on enemy even if gets a bit far
+        {
+            actual_target = GetNearEnemy();
+        }
+        else {
+            Attack();
+        }
+    }
+    GameObject GetNearEnemy() 
+    {
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject e in enemies) 
+        {
+            float distance = Vector3.Distance(transform.position, e.transform.position);
+            if (distance <= look_radius && e.GetComponent<EnemyBehaviour>().IsAlive()) 
+            {
+                return e;
+            }
+        }
+        return null;
     }
 
     // INTERACTIONS
