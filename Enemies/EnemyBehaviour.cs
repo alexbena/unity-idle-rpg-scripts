@@ -53,6 +53,7 @@ public class EnemyBehaviour : Interactable
         }
         else 
         {
+            this.anim.SetBool("fighting", false);
             walking = false;
         }
     }

@@ -11,9 +11,12 @@ public class PlayerBehavior : Interactable
 
     public bool dead;
 
+    Animator anim;
 
     public float look_radius;
     public float attack_radius;
+    public float next_attack;
+    public float attack_rate = 1f;
 
     // GUI MAKE THIS INTO CONTROLLER
     private Text ui_level;
@@ -27,6 +30,8 @@ public class PlayerBehavior : Interactable
     {
         ui_level = GameObject.Find("UI_level").GetComponent<Text>();
         dead = false;
+        anim = GetComponent<Animator>();
+        actual_target = null;
     }
 
     // Update is called once per frame
@@ -45,7 +50,27 @@ public class PlayerBehavior : Interactable
         else {
             Attack();
         }
+        
     }
+
+    void Attack() 
+    {
+        if (Vector3.Distance(transform.position, actual_target.transform.position) <= attack_radius)
+        {
+            transform.LookAt(actual_target.transform.position);
+            anim.SetBool("isAttacking", false);
+           
+            if (Time.time > next_attack)
+            {
+                next_attack = Time.time + attack_rate;
+                anim.SetBool("isAttacking", true);
+                // HIT
+                actual_target.GetComponent<EnemyBehaviour>().GetHit(20); // this needs correction
+            }
+            anim.SetBool("isAttacking", false);
+        }
+    }
+
     GameObject GetNearEnemy() 
     {
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -77,6 +102,7 @@ public class PlayerBehavior : Interactable
         }
         else
         {
+            player_info.cur_health = 0;
             Die();
         }
 
