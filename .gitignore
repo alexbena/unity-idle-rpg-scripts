@@ -1,3 +1,5 @@
+./*.cs.meta
+
 *.cs.meta
 
 **/*.cs.meta
