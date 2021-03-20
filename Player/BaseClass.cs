@@ -14,7 +14,7 @@ public class BaseClass
 
     [Header("Info")]
     public string name;
-    public string current_level;
+    public int current_level;
 
     [Header("Health & Stamina")]
     public int current_XP;
