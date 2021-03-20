@@ -15,6 +15,9 @@ public class EnemyBehaviour : Interactable
     public float attack_radius;
     public float speed;
 
+    [Header("STATS")] // This need base class for enemies
+    public bool dead;
+
     // Attack
     public float next_attack;
     public float attack_rate = 1f;
@@ -27,6 +30,7 @@ public class EnemyBehaviour : Interactable
     {
         this.anim = GetComponent<Animator>();
         target_player = PlayerManager.instance.player.transform;
+        dead = false;
     }
 
     // Update is called once per frame

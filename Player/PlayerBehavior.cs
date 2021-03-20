@@ -10,9 +10,15 @@ public class PlayerBehavior : Interactable
 
     public bool dead;
 
+
+    public float look_radius;
+    public float attack_radius;
+
     // GUI MAKE THIS INTO CONTROLLER
     private Text ui_level;
-    
+
+    Transform target_enemy;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -61,5 +67,15 @@ public class PlayerBehavior : Interactable
     public bool IsAlive() 
     {
         return !dead;
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        Handles.color = Color.yellow;
+        Handles.DrawWireArc(transform.position + new Vector3(0, 0.2f, 0), transform.up, transform.right, 360, look_radius);
+
+        Handles.color = Color.red;
+        Handles.DrawWireArc(transform.position + new Vector3(0, 0.2f, 0), transform.up, transform.right, 360, attack_radius);
     }
 }
