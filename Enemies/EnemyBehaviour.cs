@@ -5,7 +5,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(Rigidbody))]
-public class EnemyBehaviour : MonoBehaviour
+public class EnemyBehaviour : Interactable
 {
 
     private Animator anim;
