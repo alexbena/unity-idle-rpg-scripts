@@ -8,6 +8,8 @@ public class PlayerBehavior : Interactable
 
     public BaseClass player_info;
 
+    public bool dead;
+
     // GUI MAKE THIS INTO CONTROLLER
     private Text ui_level;
     
@@ -15,7 +17,7 @@ public class PlayerBehavior : Interactable
     void Start()
     {
         ui_level = GameObject.Find("UI_level").GetComponent<Text>();
-        
+        dead = false;
     }
 
     // Update is called once per frame
@@ -29,6 +31,35 @@ public class PlayerBehavior : Interactable
     public override void Interact()
     {
         base.Interact();
-        Debug.Log("Enemy Hitting");
+    }
+
+    public override void GetHit(int damage)
+    {
+        base.GetHit(damage);
+
+        if (!WillDie(damage))
+        {
+            player_info.cur_health -= damage;
+        }
+        else
+        {
+            Die();
+        }
+
+    }
+
+    public bool WillDie(int damage)
+    {
+        return (player_info.cur_health - damage) <= 0 ? true : false;
+    }
+
+    public void Die() 
+    {
+        dead = true;
+    }
+
+    public bool IsAlive() 
+    {
+        return !dead;
     }
 }

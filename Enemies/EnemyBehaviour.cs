@@ -44,7 +44,7 @@ public class EnemyBehaviour : Interactable
         }
 
         float distance = Vector3.Distance(transform.position, target_player.position);
-        if (distance <= look_radius)
+        if (distance <= look_radius && PlayerManager.instance.player.GetComponent<PlayerBehavior>().IsAlive())
         {
             MoveAndAttack();
         }
@@ -70,12 +70,11 @@ public class EnemyBehaviour : Interactable
 
             if (Time.time > next_attack) 
             {
-                print(Time.time + " " + next_attack);
                 next_attack = Time.time + attack_rate;
                 this.anim.SetBool("fighting", true);
 
                 // HIT
-                PlayerManager.instance.player.GetComponent<PlayerBehavior>().Interact(); // this needs correction
+                PlayerManager.instance.player.GetComponent<PlayerBehavior>().GetHit(20); // this needs correction
             }
             this.walking = false;
         }

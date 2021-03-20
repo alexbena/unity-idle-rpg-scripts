@@ -9,4 +9,9 @@ public class Interactable : MonoBehaviour
         Debug.Log("Interacting: " + transform.name);
 
     }
+
+    public virtual void GetHit(int damage) 
+    {
+        Debug.Log("Hitting: " + transform.name);
+    }
 }
