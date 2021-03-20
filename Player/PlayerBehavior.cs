@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerBehavior : MonoBehaviour
+public class PlayerBehavior : Interactable
 {
 
     public BaseClass player_info;
@@ -23,5 +23,12 @@ public class PlayerBehavior : MonoBehaviour
     {
         ui_level.text = "Level " + player_info.current_level;
         
+    }
+
+    // INTERACTIONS
+    public override void Interact()
+    {
+        base.Interact();
+        Debug.Log("Enemy Hitting");
     }
 }

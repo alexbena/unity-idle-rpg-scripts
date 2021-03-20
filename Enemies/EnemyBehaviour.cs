@@ -72,7 +72,9 @@ public class EnemyBehaviour : Interactable
             {
                 next_attack = Time.time + attack_rate;
                 this.anim.SetBool("fighting", true);
+
                 // TODO HIT
+                PlayerManager.instance.player.GetComponent<PlayerBehavior>().Interact(); // Correct
             }
             this.walking = false;
         }
@@ -86,6 +88,7 @@ public class EnemyBehaviour : Interactable
     public override void Interact() 
     {
         base.Interact();
+
     }
 
 
