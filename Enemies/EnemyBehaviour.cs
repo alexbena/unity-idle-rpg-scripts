@@ -36,7 +36,7 @@ public class EnemyBehaviour : Interactable
 
         if (!walking)
         {
-            this.anim.SetBool("idling", true);
+            this.anim.SetBool("idling", true); // Need change for fighting
         }
         else 
         {
@@ -70,11 +70,12 @@ public class EnemyBehaviour : Interactable
 
             if (Time.time > next_attack) 
             {
+                print(Time.time + " " + next_attack);
                 next_attack = Time.time + attack_rate;
                 this.anim.SetBool("fighting", true);
 
-                // TODO HIT
-                PlayerManager.instance.player.GetComponent<PlayerBehavior>().Interact(); // Correct
+                // HIT
+                PlayerManager.instance.player.GetComponent<PlayerBehavior>().Interact(); // this needs correction
             }
             this.walking = false;
         }
