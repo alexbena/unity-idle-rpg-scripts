@@ -50,12 +50,8 @@ public class PlayerBehavior : Interactable
             actual_target = GetNearEnemy();
         }
         else {
-            if (anim.GetBool("isWalking"))
-            {
-                transform.LookAt(actual_target.transform.position);
-                anim.SetBool("isAttacking", true);
-                Attack();
-            }
+            transform.LookAt(actual_target.transform.position);              
+            Attack();
         }
         
     }
@@ -64,7 +60,7 @@ public class PlayerBehavior : Interactable
     {
         if (Vector3.Distance(transform.position, actual_target.transform.position) <= attack_radius)
         {
-            
+            anim.SetBool("isAttacking", true);
             if (Time.time > next_attack)
             {
                 next_attack = Time.time + attack_rate;

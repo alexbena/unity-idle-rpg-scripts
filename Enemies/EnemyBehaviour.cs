@@ -20,6 +20,7 @@ public class EnemyBehaviour : Interactable
     public float attack_rate = 1f;
     public int max_health;
     public int cur_health;
+    public int xp_drop = 20;
 
     // Target
     Transform target_player;
@@ -59,13 +60,13 @@ public class EnemyBehaviour : Interactable
                 walking = false;
             }
         }
-        else 
+        else
         {
             this.anim.SetBool("idling", true);
         }
     }
 
-    void MoveAndAttack() 
+    void MoveAndAttack()
     {
         transform.LookAt(target_player.position);
 
@@ -79,7 +80,7 @@ public class EnemyBehaviour : Interactable
             this.walking = false;
             this.anim.SetBool("fighting", false);
 
-            if (Time.time > next_attack) 
+            if (Time.time > next_attack)
             {
                 next_attack = Time.time + attack_rate;
                 this.anim.SetBool("fighting", true);
@@ -89,14 +90,14 @@ public class EnemyBehaviour : Interactable
             }
             this.walking = false;
         }
-        else 
+        else
         {
             this.walking = true;
         }
     }
 
     // INTERACTIONS
-    public override void Interact() 
+    public override void Interact()
     {
         base.Interact();
 
@@ -124,6 +125,7 @@ public class EnemyBehaviour : Interactable
 
     public void Die()
     {
+        GiveXP();
         dead = true;
         Destroy(this.gameObject);
     }
@@ -131,6 +133,11 @@ public class EnemyBehaviour : Interactable
     public bool IsAlive()
     {
         return !dead;
+    }
+
+    public void GiveXP() 
+    {
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<LevelSystem>().AddXP(xp_drop);
     }
 
 

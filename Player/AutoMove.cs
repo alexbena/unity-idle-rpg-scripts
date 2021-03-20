@@ -26,7 +26,7 @@ public class AutoMove : MonoBehaviour
 
     void Update()
     {
-        if(current != -1) {
+        if(current != -1 && !anim.GetBool("isAttacking")) {
             transform.LookAt(active_route[current].transform.position);
 
             float step = speed * Time.deltaTime;

@@ -29,7 +29,7 @@ public class LevelSystem : MonoBehaviour
     {
         player = PlayerManager.instance.player;
         ui_fill_bar = GameObject.Find("UI_fill_bar").GetComponent<Text>();
-        InvokeRepeating("AddXP", 1f, 1f);
+        //InvokeRepeating("AddXP", 1f, 1f);
     }
 
     // Update is called once per frame
@@ -38,9 +38,9 @@ public class LevelSystem : MonoBehaviour
         
     }
 
-    public void AddXP() 
+    public void AddXP(int xp_amount) 
     {
-        CalculateLevel(5);
+        CalculateLevel(xp_amount);
         ui_fill_bar.text = reverse_fill_amount.ToString();
     }
 
