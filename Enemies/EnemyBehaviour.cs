@@ -82,7 +82,14 @@ public class EnemyBehaviour : Interactable
         }
     }
 
-    // VISION GIZMO
+    // INTERACTIONS
+    public override void Interact() 
+    {
+        base.Interact();
+    }
+
+
+    // DEBUG: VISION GIZMO 
     private void OnDrawGizmos()
     {
         Handles.color = Color.yellow;

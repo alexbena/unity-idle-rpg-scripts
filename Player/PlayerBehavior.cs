@@ -9,7 +9,8 @@ public class PlayerBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        ui_level = GameObject.Find("UI_level").GetComponent<Text>();
+        ui_fill_bar = GameObject.Find("UI_fill_bar").GetComponent<Text>();
     }
 
     // Update is called once per frame

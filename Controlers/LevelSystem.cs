@@ -23,9 +23,12 @@ public class LevelSystem : MonoBehaviour
     private Text ui_level;
     private Text ui_fill_bar;
 
+    private GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
+        player = PlayerManager.instance.player;
         ui_level = GameObject.Find("UI_level").GetComponent<Text>();
         ui_fill_bar = GameObject.Find("UI_fill_bar").GetComponent<Text>();
         InvokeRepeating("AddXP", 1f, 1f);
@@ -53,6 +56,7 @@ public class LevelSystem : MonoBehaviour
         if (current_level != temp_cur_level) 
         {
             current_level = temp_cur_level;
+            player.
         }
 
         xp_for_next_level = base_XP * current_level * current_level;
