@@ -35,26 +35,33 @@ public class EnemyBehaviour : Interactable
     // Update is called once per frame
     void Update()
     {
-        this.anim.SetBool("walking", walking);
-
-        if (!walking)
+        if (IsAlive() && PlayerManager.instance.player.GetComponent<PlayerBehavior>().IsAlive())
         {
-            this.anim.SetBool("idling", true); // Need change for fighting
+            this.anim.SetBool("walking", walking);
+
+            if (!walking)
+            {
+                this.anim.SetBool("idling", true); // Need change for fighting
+            }
+            else
+            {
+                this.anim.SetBool("idling", false);
+            }
+
+            float distance = Vector3.Distance(transform.position, target_player.position);
+            if (distance <= look_radius)
+            {
+                MoveAndAttack();
+            }
+            else
+            {
+                this.anim.SetBool("fighting", false);
+                walking = false;
+            }
         }
         else 
         {
-            this.anim.SetBool("idling", false);
-        }
-
-        float distance = Vector3.Distance(transform.position, target_player.position);
-        if (distance <= look_radius && PlayerManager.instance.player.GetComponent<PlayerBehavior>().IsAlive())
-        {
-            MoveAndAttack();
-        }
-        else 
-        {
-            this.anim.SetBool("fighting", false);
-            walking = false;
+            this.anim.SetBool("idling", true);
         }
     }
 
@@ -94,7 +101,21 @@ public class EnemyBehaviour : Interactable
         base.Interact();
 
     }
+    public override void GetHit(int damage)
+    {
+        base.GetHit(damage);
 
+        if (!WillDie(damage))
+        {
+            cur_health -= damage;
+        }
+        else
+        {
+            cur_health = 0;
+            Die();
+        }
+
+    }
 
     public bool WillDie(int damage)
     {
@@ -104,6 +125,7 @@ public class EnemyBehaviour : Interactable
     public void Die()
     {
         dead = true;
+        Destroy(this.gameObject);
     }
 
     public bool IsAlive()

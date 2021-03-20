@@ -41,14 +41,21 @@ public class PlayerBehavior : Interactable
 
         if (actual_target == null)
         {
+            anim.SetBool("isAttacking", false);
             actual_target = GetNearEnemy();
         }
         else if (!actual_target.GetComponent<EnemyBehaviour>().IsAlive()) // Mantain focus on enemy even if gets a bit far
         {
+            anim.SetBool("isAttacking", false);
             actual_target = GetNearEnemy();
         }
         else {
-            Attack();
+            if (anim.GetBool("isWalking"))
+            {
+                transform.LookAt(actual_target.transform.position);
+                anim.SetBool("isAttacking", true);
+                Attack();
+            }
         }
         
     }
@@ -57,17 +64,15 @@ public class PlayerBehavior : Interactable
     {
         if (Vector3.Distance(transform.position, actual_target.transform.position) <= attack_radius)
         {
-            transform.LookAt(actual_target.transform.position);
-            anim.SetBool("isAttacking", false);
-           
+            
             if (Time.time > next_attack)
             {
                 next_attack = Time.time + attack_rate;
-                anim.SetBool("isAttacking", true);
+                
                 // HIT
                 actual_target.GetComponent<EnemyBehaviour>().GetHit(20); // this needs correction
             }
-            anim.SetBool("isAttacking", false);
+            
         }
     }
 
@@ -116,6 +121,7 @@ public class PlayerBehavior : Interactable
     public void Die() 
     {
         dead = true;
+        Destroy(this.gameObject);
     }
 
     public bool IsAlive() 
