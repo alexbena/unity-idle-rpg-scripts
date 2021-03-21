@@ -15,6 +15,7 @@ public class DamagePopUp : MonoBehaviour
 
     public static DamagePopUp Create(Vector3 position, int damage_amount, bool is_critical) 
     {
+        position.y += 0.9f;
         GameObject damage_pop = Instantiate(AssetsManager.instance.popup_damage, position, Quaternion.identity);
         DamagePopUp damage_popup_script = damage_pop.GetComponent<DamagePopUp>();
         damage_popup_script.Setup(damage_amount, is_critical);
@@ -33,12 +34,12 @@ public class DamagePopUp : MonoBehaviour
         if (is_critical)
         {
             text_mesh.fontSize = 9;
-            text_mesh.color = new Color(255, 9, 0);
+            text_mesh.color = Color.red;
         }
         else
         {
             text_mesh.fontSize = 5;
-            text_mesh.color = new Color(255, 106, 0);
+            text_mesh.color = Color.yellow;
         }
 
         text_color = text_mesh.color;

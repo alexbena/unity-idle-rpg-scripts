@@ -68,8 +68,8 @@ public class PlayerBehavior : Interactable
             {
                 next_attack = Time.time + attack_rate;
                 int attack_dmg = Random.Range(5, 30);
-                bool is_critial;
-                if (attack_dmg > 15)
+                bool is_critial = false;
+                if (attack_dmg > 20)
                 {
                     is_critial = true;
                 }
