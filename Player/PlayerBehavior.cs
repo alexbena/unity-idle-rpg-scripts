@@ -10,6 +10,7 @@ public class PlayerBehavior : Interactable
     public BaseClass player_info;
 
     public bool dead;
+    public bool attacking;
 
     Animator anim;
 
@@ -44,6 +45,7 @@ public class PlayerBehavior : Interactable
 
         if (actual_target == null)
         {
+            attacking = false;
             anim.SetBool("isAttacking", false);
             actual_target = GetNearEnemy();
         }
@@ -63,6 +65,7 @@ public class PlayerBehavior : Interactable
     {
         if (Vector3.Distance(transform.position, actual_target.transform.position) <= attack_radius)
         {
+            attacking = true;
             anim.SetBool("isAttacking", true);
             if (Time.time > next_attack)
             {
@@ -73,10 +76,11 @@ public class PlayerBehavior : Interactable
                 {
                     is_critial = true;
                 }
-                else 
+                else
                 {
                     is_critial = false;
                 }
+                anim.SetTrigger("Attack");
 
                 DamagePopUp.Create(actual_target.transform.position, attack_dmg, is_critial);
                 // HIT

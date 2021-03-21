@@ -26,7 +26,7 @@ public class AutoMove : MonoBehaviour
 
     void Update()
     {
-        if(current != -1 && !anim.GetBool("isAttacking")) {
+        if(current != -1 && !PlayerManager.instance.player.GetComponent<PlayerBehavior>().attacking) {
             transform.LookAt(active_route[current].transform.position);
 
             float step = speed * Time.deltaTime;
