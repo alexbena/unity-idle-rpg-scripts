@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1283232535962438380}
   - component: {fileID: 1283232535962438383}
   - component: {fileID: 1283232535962438382}
-  - component: {fileID: 1613251860}
+  - component: {fileID: 1613251856}
   m_Layer: 0
   m_Name: UI_popup_dmg
   m_TagString: Untagged
@@ -75,8 +75,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1081938625
+  m_SortingLayer: 1
   m_SortingOrder: 0
 --- !u!222 &1283232535962438383
 CanvasRenderer:
@@ -177,7 +177,7 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
---- !u!114 &1613251860
+--- !u!114 &1613251856
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

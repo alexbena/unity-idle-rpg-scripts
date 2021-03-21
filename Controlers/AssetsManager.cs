@@ -14,6 +14,6 @@ public class AssetsManager : MonoBehaviour
         instance = this;
     }
 
-    public Transform popup_damage;
+    public GameObject popup_damage;
 
 }
