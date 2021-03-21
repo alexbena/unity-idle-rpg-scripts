@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1283232535962438380}
   - component: {fileID: 1283232535962438383}
   - component: {fileID: 1283232535962438382}
+  - component: {fileID: 1613251860}
   m_Layer: 0
   m_Name: UI_popup_dmg
   m_TagString: Untagged
@@ -176,3 +177,15 @@ MonoBehaviour:
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
+--- !u!114 &1613251860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283232535962438385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82fcffe975f7bef4b8cd09bdc87eefd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

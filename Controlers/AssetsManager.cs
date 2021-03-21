@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Testing : MonoBehaviour
+public class AssetsManager : MonoBehaviour
 {
-
-    [SerializeField] private Transform popup_dmg;
     // Start is called before the first frame update
     void Start()
     {
