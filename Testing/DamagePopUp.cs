@@ -8,6 +8,7 @@ public class DamagePopUp : MonoBehaviour
 
     private TextMeshPro text_mesh;
     private float disappear_time;
+    private const float MAX_DISAPPEAR_TIME = 1f; // for half time detection
     private Color text_color;
 
     public static DamagePopUp Create(Vector3 position, int damage_amount, bool is_critical) 
@@ -30,10 +31,12 @@ public class DamagePopUp : MonoBehaviour
         if (is_critical)
         {
             text_mesh.fontSize = 9;
+            text_mesh.color = new Color(255, 9, 0);
         }
         else
         {
             text_mesh.fontSize = 5;
+            text_mesh.color = new Color(255, 106, 0);
         }
 
         text_color = text_mesh.color;
@@ -51,6 +54,17 @@ public class DamagePopUp : MonoBehaviour
     {
         float move_y_speed = 2.0f; 
         transform.position += new Vector3(0, move_y_speed) * Time.deltaTime;
+
+        if (disappear_time > MAX_DISAPPEAR_TIME * 0.5) // first half lifetime
+        {
+            float increase_scale_speed = 1f;
+            transform.localScale += Vector3.one * increase_scale_speed * Time.deltaTime;
+        }
+        else 
+        {
+            float decrease_scale_speed = 1f;
+            transform.localScale -= Vector3.one * decrease_scale_speed * Time.deltaTime;
+        }
 
         disappear_time -= Time.deltaTime;
         if (disappear_time < 0) 

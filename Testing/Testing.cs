@@ -7,7 +7,7 @@ public class Testing : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DamagePopUp.Create(Vector3.zero, 300);
+        DamagePopUp.Create(Vector3.zero, 300, true);
     }
 
     // Update is called once per frame
