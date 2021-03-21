@@ -20,6 +20,7 @@ public class PlayerBehavior : Interactable
 
     // GUI MAKE THIS INTO CONTROLLER
     private Text ui_level;
+    private Text ui_gold;
 
     // Enemy Focus
     GameObject[] enemies;
@@ -29,6 +30,7 @@ public class PlayerBehavior : Interactable
     void Start()
     {
         ui_level = GameObject.Find("UI_level").GetComponent<Text>();
+        ui_gold = GameObject.Find("UI_gold").GetComponent<Text>();
         dead = false;
         anim = GetComponent<Animator>();
         actual_target = null;
@@ -38,6 +40,7 @@ public class PlayerBehavior : Interactable
     void Update()
     {
         ui_level.text = "Level " + player_info.current_level;
+        ui_gold.text = "Gold " + player_info.gold;
 
         if (actual_target == null)
         {
@@ -125,6 +128,10 @@ public class PlayerBehavior : Interactable
         return !dead;
     }
 
+    public void AddGold(int gold) 
+    {
+        player_info.gold += gold;
+    }
 
     private void OnDrawGizmos()
     {

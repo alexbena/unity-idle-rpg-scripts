@@ -20,8 +20,10 @@ public class EnemyBehaviour : Interactable
     public float attack_rate = 1f;
     public int max_health;
     public int cur_health;
-    public int xp_drop = 20;
 
+    // DROP (Split in drop table)
+    public int xp_drop = 20;
+    public int gold_drop;
     // Target
     Transform target_player;
 
@@ -126,6 +128,7 @@ public class EnemyBehaviour : Interactable
     public void Die()
     {
         GiveXP();
+        GiveDrop();
         dead = true;
         Destroy(this.gameObject);
     }
@@ -137,7 +140,13 @@ public class EnemyBehaviour : Interactable
 
     public void GiveXP() 
     {
-        GameObject.FindGameObjectWithTag("GameController").GetComponent<LevelSystem>().AddXP(xp_drop);
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<LevelSystem>().AddXP(xp_drop); // Change to GameController Manager
+    }
+
+    public void GiveDrop() 
+    {
+        gold_drop = Random.Range(1, 5);
+        PlayerManager.instance.player.GetComponent<PlayerBehavior>().AddGold(gold_drop);
     }
 
 
