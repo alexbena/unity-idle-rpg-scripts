@@ -10,6 +10,8 @@ public class DamagePopUp : MonoBehaviour
     private float disappear_time;
     private const float MAX_DISAPPEAR_TIME = 1f; // for half time detection
     private Color text_color;
+    private Vector3 move_vector;
+    private static int sorting_order;
 
     public static DamagePopUp Create(Vector3 position, int damage_amount, bool is_critical) 
     {
@@ -41,6 +43,11 @@ public class DamagePopUp : MonoBehaviour
 
         text_color = text_mesh.color;
         disappear_time = 1f;
+
+        sorting_order++;
+        text_mesh.sortingOrder = sorting_order;
+
+        move_vector = new Vector3(0.7f, 1) * 3f;
     }
 
     // Start is called before the first frame update
@@ -51,9 +58,9 @@ public class DamagePopUp : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        float move_y_speed = 2.0f; 
-        transform.position += new Vector3(0, move_y_speed) * Time.deltaTime;
+    { 
+        transform.position += move_vector * Time.deltaTime;
+        move_vector -= move_vector * 8f * Time.deltaTime;
 
         if (disappear_time > MAX_DISAPPEAR_TIME * 0.5) // first half lifetime
         {

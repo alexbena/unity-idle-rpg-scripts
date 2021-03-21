@@ -67,9 +67,20 @@ public class PlayerBehavior : Interactable
             if (Time.time > next_attack)
             {
                 next_attack = Time.time + attack_rate;
-                
+                int attack_dmg = Random.Range(5, 30);
+                bool is_critial;
+                if (attack_dmg > 15)
+                {
+                    is_critial = true;
+                }
+                else 
+                {
+                    is_critial = false;
+                }
+
+                DamagePopUp.Create(actual_target.transform.position, attack_dmg, is_critial);
                 // HIT
-                actual_target.GetComponent<EnemyBehaviour>().GetHit(20); // this needs correction
+                actual_target.GetComponent<EnemyBehaviour>().GetHit(attack_dmg); // this needs correction
             }
             
         }
