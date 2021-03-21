@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// REFERENCES TO ALL ASSETS NEEDED
 public class AssetsManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    private static AssetsManager _i;
+
+    public static AssetsManager i {
+        get 
+        {
+            if (_i == null) _i = Instantiate(Resources.Load<AssetsManager>("AssetsManager"));
+
+            return _i;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
