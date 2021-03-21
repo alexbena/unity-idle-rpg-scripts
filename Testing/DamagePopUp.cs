@@ -10,11 +10,11 @@ public class DamagePopUp : MonoBehaviour
     private float disappear_time;
     private Color text_color;
 
-    public static DamagePopUp Create(Vector3 position, int damage_amount) 
+    public static DamagePopUp Create(Vector3 position, int damage_amount, bool is_critical) 
     {
         GameObject damage_pop = Instantiate(AssetsManager.instance.popup_damage, position, Quaternion.identity);
         DamagePopUp damage_popup_script = damage_pop.GetComponent<DamagePopUp>();
-        damage_popup_script.Setup(damage_amount);
+        damage_popup_script.Setup(damage_amount, is_critical);
 
         return damage_popup_script;
     }
@@ -24,10 +24,20 @@ public class DamagePopUp : MonoBehaviour
     {
         text_mesh = transform.GetComponent<TextMeshPro>();
     }
-    public void Setup(int damage_amount) 
+    public void Setup(int damage_amount, bool is_critical) 
     {
         text_mesh.SetText(damage_amount.ToString());
+        if (is_critical)
+        {
+            text_mesh.fontSize = 9;
+        }
+        else
+        {
+            text_mesh.fontSize = 5;
+        }
+
         text_color = text_mesh.color;
+        disappear_time = 1f;
     }
 
     // Start is called before the first frame update
@@ -46,8 +56,13 @@ public class DamagePopUp : MonoBehaviour
         if (disappear_time < 0) 
         {
             float disappear_speed = 3f;
-            text_color.a -= disappear_time * Time.deltaTime;
+            text_color.a -= disappear_speed * Time.deltaTime;
             text_mesh.color = text_color;
+
+            if (text_mesh.color.a < 0) 
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
