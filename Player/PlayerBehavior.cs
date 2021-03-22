@@ -24,6 +24,12 @@ public class PlayerBehavior : Interactable
     private TextMeshProUGUI ui_level;
     private Text ui_gold;
 
+    // Get this out
+    public AudioClip hit_sfx;
+    public AudioClip critical_hit_sfx;
+    public AudioClip level_up_sfx;
+    AudioSource audio_sfx;
+
     // Enemy Focus
     GameObject[] enemies;
     GameObject actual_target;
@@ -36,12 +42,17 @@ public class PlayerBehavior : Interactable
         dead = false;
         anim = GetComponent<Animator>();
         actual_target = null;
+        audio_sfx = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (ui_level.text != player_info.current_level.ToString())
+            LevelUP();
+
         ui_level.text = player_info.current_level.ToString();
+        
         ui_gold.text = player_info.gold.ToString();
 
         if (actual_target == null)
@@ -84,6 +95,13 @@ public class PlayerBehavior : Interactable
                 anim.SetTrigger("Attack");
 
                 DamagePopUp.Create(actual_target.transform.position, attack_dmg, is_critial);
+
+                if(is_critial)
+                    audio_sfx.clip = critical_hit_sfx;
+                else
+                    audio_sfx.clip = hit_sfx;
+
+                audio_sfx.Play();
                 // HIT
                 actual_target.GetComponent<EnemyBehaviour>().GetHit(attack_dmg); // this needs correction
             }
@@ -147,6 +165,12 @@ public class PlayerBehavior : Interactable
     public void AddGold(int gold) 
     {
         player_info.gold += gold;
+    }
+
+    public void LevelUP() 
+    {
+        audio_sfx.clip = level_up_sfx;
+        audio_sfx.Play();
     }
 
     private void OnDrawGizmos()
