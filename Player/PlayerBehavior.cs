@@ -32,6 +32,7 @@ public class PlayerBehavior : Interactable
 
     // EFFECTS
     public GameObject hit_vfx;
+    public GameObject critical_hit_vfx;
     public GameObject level_up_vfx;
 
     // Enemy Focus
@@ -100,11 +101,18 @@ public class PlayerBehavior : Interactable
 
                 DamagePopUp.Create(actual_target.transform.position, attack_dmg, is_critial);
 
-                if(is_critial)
+                if (is_critial)
+                {
+                    GameObject effect = (GameObject)Instantiate(critical_hit_vfx, transform.GetChild(1).GetChild(0).GetChild(5).position, Quaternion.identity);
+                    Destroy(effect, 0.5f);
                     audio_sfx.clip = critical_hit_sfx;
+                }
                 else
+                {
+                    GameObject effect = (GameObject)Instantiate(hit_vfx, transform.GetChild(1).GetChild(0).GetChild(5).position, Quaternion.identity);
+                    Destroy(effect, 0.5f);
                     audio_sfx.clip = hit_sfx;
-
+                }
                 audio_sfx.volume = 0.03f;
                 audio_sfx.Play();
                 // HIT
@@ -174,6 +182,8 @@ public class PlayerBehavior : Interactable
 
     public void LevelUP() 
     {
+        GameObject effect = (GameObject)Instantiate(level_up_vfx, transform.position, Quaternion.identity);
+        Destroy(effect, 1.5f);
         audio_sfx.clip = level_up_sfx;
         audio_sfx.volume = 0.15f;
         audio_sfx.Play();
