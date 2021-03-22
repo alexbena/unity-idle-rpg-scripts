@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +21,7 @@ public class PlayerBehavior : Interactable
     public float attack_rate = 1f;
 
     // GUI MAKE THIS INTO CONTROLLER
-    private Text ui_level;
+    private TextMeshProUGUI ui_level;
     private Text ui_gold;
 
     // Enemy Focus
@@ -30,7 +31,7 @@ public class PlayerBehavior : Interactable
     // Start is called before the first frame update
     void Start()
     {
-        ui_level = GameObject.Find("UI_level").GetComponent<Text>();
+        ui_level = GameObject.Find("UI_level").transform.GetComponent<TextMeshProUGUI>();
         ui_gold = GameObject.Find("UI_gold").GetComponent<Text>();
         dead = false;
         anim = GetComponent<Animator>();
@@ -40,8 +41,8 @@ public class PlayerBehavior : Interactable
     // Update is called once per frame
     void Update()
     {
-        ui_level.text = "Level " + player_info.current_level;
-        ui_gold.text = "Gold " + player_info.gold;
+        ui_level.text = player_info.current_level.ToString();
+        ui_gold.text = player_info.gold.ToString();
 
         if (actual_target == null)
         {

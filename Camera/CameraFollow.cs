@@ -10,7 +10,7 @@ public class CameraFollow : MonoBehaviour
     [Range(10f,25f)]public float distance = 25f;
     public float min_distance = 10f;
     public float max_distance = 25f;
-    private Vector3 offset = new Vector3(0.0f, 1.0f, 0.0f);
+    private Vector3 offset = new Vector3(2.0f, 1.0f, 0.0f);
     [Header("Speeds")]
     public float smooth_speed = 5f;
     public float scroll_sensitivity = 10f;

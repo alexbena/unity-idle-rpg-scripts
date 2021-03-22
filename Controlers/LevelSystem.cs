@@ -20,7 +20,7 @@ public class LevelSystem : MonoBehaviour
     public int stat_points;
     public int skill_points;
 
-    private Text ui_fill_bar; // Take this out to controller
+    private GameObject ui_fill_bar; // Take this out to controller
 
     private GameObject player;
 
@@ -28,7 +28,7 @@ public class LevelSystem : MonoBehaviour
     void Start()
     {
         player = PlayerManager.instance.player;
-        ui_fill_bar = GameObject.Find("UI_fill_bar").GetComponent<Text>();
+        ui_fill_bar = GameObject.Find("UI_fill_bar");
         //InvokeRepeating("AddXP", 1f, 1f);
     }
 
@@ -41,7 +41,7 @@ public class LevelSystem : MonoBehaviour
     public void AddXP(int xp_amount) 
     {
         CalculateLevel(xp_amount);
-        ui_fill_bar.text = reverse_fill_amount.ToString();
+        ui_fill_bar.transform.localScale = new Vector3(reverse_fill_amount, 1, 1);
     }
 
     void CalculateLevel(int amount) 
