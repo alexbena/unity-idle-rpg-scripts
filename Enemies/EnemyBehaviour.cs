@@ -27,6 +27,12 @@ public class EnemyBehaviour : Interactable
     // Target
     Transform target_player;
 
+    // CHECK
+    public AudioClip hit_sfx;
+    public AudioClip critical_hit_sfx;
+    public AudioClip level_up_sfx;
+    AudioSource audio_sfx;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -130,7 +136,12 @@ public class EnemyBehaviour : Interactable
         GiveXP();
         GiveDrop();
         dead = true;
-        Destroy(this.gameObject);
+        // Dead effect
+        Rigidbody rigi = GetComponent<Rigidbody>();
+        rigi.constraints = RigidbodyConstraints.None;
+        rigi.AddForce(transform.up * 300);
+        rigi.AddForce(transform.forward * -100);
+        Destroy(this.gameObject, 5);
     }
 
     public bool IsAlive()
