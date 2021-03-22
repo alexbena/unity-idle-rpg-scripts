@@ -30,6 +30,10 @@ public class PlayerBehavior : Interactable
     public AudioClip level_up_sfx;
     AudioSource audio_sfx;
 
+    // EFFECTS
+    public GameObject hit_vfx;
+    public GameObject level_up_vfx;
+
     // Enemy Focus
     GameObject[] enemies;
     GameObject actual_target;
@@ -101,6 +105,7 @@ public class PlayerBehavior : Interactable
                 else
                     audio_sfx.clip = hit_sfx;
 
+                audio_sfx.volume = 0.03f;
                 audio_sfx.Play();
                 // HIT
                 actual_target.GetComponent<EnemyBehaviour>().GetHit(attack_dmg); // this needs correction
@@ -170,6 +175,7 @@ public class PlayerBehavior : Interactable
     public void LevelUP() 
     {
         audio_sfx.clip = level_up_sfx;
+        audio_sfx.volume = 0.15f;
         audio_sfx.Play();
     }
 

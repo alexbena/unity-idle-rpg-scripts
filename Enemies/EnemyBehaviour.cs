@@ -29,8 +29,7 @@ public class EnemyBehaviour : Interactable
 
     // CHECK
     public AudioClip hit_sfx;
-    public AudioClip critical_hit_sfx;
-    public AudioClip level_up_sfx;
+    public AudioClip die_sfx;
     AudioSource audio_sfx;
 
     // Start is called before the first frame update
@@ -39,6 +38,8 @@ public class EnemyBehaviour : Interactable
         this.anim = GetComponent<Animator>();
         target_player = PlayerManager.instance.player.transform;
         dead = false;
+        audio_sfx = GetComponent<AudioSource>();
+
     }
 
     // Update is called once per frame
@@ -92,6 +93,9 @@ public class EnemyBehaviour : Interactable
             {
                 next_attack = Time.time + attack_rate;
                 this.anim.SetBool("fighting", true);
+                audio_sfx.clip = hit_sfx;
+                audio_sfx.volume = 0.04f;
+                audio_sfx.Play();
 
                 // HIT
                 PlayerManager.instance.player.GetComponent<PlayerBehavior>().GetHit(20); // this needs correction
@@ -137,9 +141,13 @@ public class EnemyBehaviour : Interactable
         GiveDrop();
         dead = true;
         // Dead effect
+        audio_sfx.clip = die_sfx;
+        audio_sfx.volume = 0.1f;
+        audio_sfx.Play();
         Rigidbody rigi = GetComponent<Rigidbody>();
         rigi.constraints = RigidbodyConstraints.None;
         rigi.AddForce(transform.up * 300);
+        rigi.AddTorque(transform.forward * -100);
         rigi.AddForce(transform.forward * -100);
         Destroy(this.gameObject, 5);
     }
