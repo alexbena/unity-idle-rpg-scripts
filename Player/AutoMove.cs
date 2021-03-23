@@ -7,7 +7,7 @@ using UnityEngine;
 public class AutoMove : MonoBehaviour
 {
     public Dictionary<string, List<GameObject>> routes = new Dictionary<string, List<GameObject>>();
-    public List<GameObject> active_route;
+    private List<GameObject> active_route;
     public GameObject player;
     int current = -1;
     public float speed;

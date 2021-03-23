@@ -16,6 +16,7 @@ public class SpawnSystem : MonoBehaviour
     public float spawn_range;
     public float detection_range;
 
+#if UNITY_EDITOR
     //DEBUG GIZMOS
     private void OnDrawGizmos()
     {
@@ -25,7 +26,7 @@ public class SpawnSystem : MonoBehaviour
         Handles.color = Color.red;
         Handles.DrawWireArc(transform.position, transform.up, transform.right, 360, spawn_range);
     }
-
+#endif
     // Start is called before the first frame update
     void Start()
     {

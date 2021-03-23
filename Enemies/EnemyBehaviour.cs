@@ -170,6 +170,7 @@ public class EnemyBehaviour : Interactable
 
 
     // DEBUG: VISION GIZMO 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Handles.color = Color.yellow;
@@ -178,4 +179,5 @@ public class EnemyBehaviour : Interactable
         Handles.color = Color.red;
         Handles.DrawWireArc(transform.position + new Vector3(0, 0.2f, 0), transform.up, transform.right, 360, attack_radius);
     }
+#endif
 }

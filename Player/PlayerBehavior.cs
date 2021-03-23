@@ -22,6 +22,8 @@ public class PlayerBehavior : Interactable
 
     // GUI MAKE THIS INTO CONTROLLER
     private TextMeshProUGUI ui_level;
+    private TextMeshProUGUI ui_health_bar_text;
+    private GameObject ui_health_bar;
     private Text ui_gold;
 
     // Get this out
@@ -39,15 +41,26 @@ public class PlayerBehavior : Interactable
     GameObject[] enemies;
     GameObject actual_target;
 
+
+    private float GetHealthPercent() 
+    {
+        return ((player_info.max_health - player_info.cur_health) + 100) / 100;
+    }
     // Start is called before the first frame update
     void Start()
     {
         ui_level = GameObject.Find("UI_level").transform.GetComponent<TextMeshProUGUI>();
+        ui_health_bar_text = GameObject.Find("UI_health_bar_text").transform.GetComponent<TextMeshProUGUI>();
+        ui_health_bar = GameObject.Find("UI_health_bar");
         ui_gold = GameObject.Find("UI_gold").GetComponent<Text>();
         dead = false;
         anim = GetComponent<Animator>();
         actual_target = null;
         audio_sfx = GetComponent<AudioSource>();
+
+        ui_health_bar.transform.localScale = new Vector3(GetHealthPercent(), 1, 1);
+        ui_health_bar_text.text = player_info.cur_health + " / " + player_info.max_health;
+
     }
 
     // Update is called once per frame
@@ -57,7 +70,6 @@ public class PlayerBehavior : Interactable
             LevelUP();
 
         ui_level.text = player_info.current_level.ToString();
-        
         ui_gold.text = player_info.gold.ToString();
 
         if (actual_target == null)
@@ -157,6 +169,7 @@ public class PlayerBehavior : Interactable
             Die();
         }
 
+        ui_health_bar.transform.localScale = new Vector3(GetHealthPercent(), 1, 1);
     }
 
     public bool WillDie(int damage)
@@ -189,6 +202,7 @@ public class PlayerBehavior : Interactable
         audio_sfx.Play();
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Handles.color = Color.yellow;
@@ -197,4 +211,5 @@ public class PlayerBehavior : Interactable
         Handles.color = Color.red;
         Handles.DrawWireArc(transform.position + new Vector3(0, 0.2f, 0), transform.up, transform.right, 360, attack_radius);
     }
+#endif
 }
