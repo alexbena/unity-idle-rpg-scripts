@@ -44,7 +44,7 @@ public class PlayerBehavior : Interactable
 
     private float GetHealthPercent() 
     {
-        return ((player_info.max_health - player_info.cur_health) + 100) / 100;
+        return (player_info.cur_health/player_info.max_health)*100;
     }
     // Start is called before the first frame update
     void Start()
@@ -169,6 +169,7 @@ public class PlayerBehavior : Interactable
             Die();
         }
 
+        ui_health_bar_text.text = player_info.cur_health + " / " + player_info.max_health;
         ui_health_bar.transform.localScale = new Vector3(GetHealthPercent(), 1, 1);
     }
 

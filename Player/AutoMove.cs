@@ -39,6 +39,7 @@ public class AutoMove : MonoBehaviour
                 if (current >= active_route.Count) { 
                     current = -1;
                     anim.SetBool("isWalking", false); // Take anims out
+                    AssetsManager.instance.Level_changer.GetComponent<LevelChanger>().FadeToLevel(1);
                 }
             }
         }
