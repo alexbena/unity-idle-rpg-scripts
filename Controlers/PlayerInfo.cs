@@ -1,10 +1,21 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 [System.Serializable]
-public class BaseClass
+public class PlayerInfo : MonoBehaviour
 {
-    public enum genders 
-    { 
+
+    public static PlayerInfo instance;
+
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+        instance = this;
+    }
+
+    public enum genders
+    {
         MALE,
         FEMALE
     }
@@ -36,3 +47,4 @@ public class BaseClass
     public int skillPoints;
     // List of skills
 }
+
