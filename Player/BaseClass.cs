@@ -10,7 +10,7 @@ public class BaseClass
     }
 
     [Header("Info")]
-    public string name;
+    public string player_name;
     public int current_level;
     public int gold;
 

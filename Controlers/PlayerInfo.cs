@@ -21,7 +21,7 @@ public class PlayerInfo : MonoBehaviour
     }
 
     [Header("Info")]
-    public string name;
+    public string player_name;
     public int current_level;
     public int gold;
 

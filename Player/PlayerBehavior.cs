@@ -49,7 +49,9 @@ public class PlayerBehavior : Interactable
     // Start is called before the first frame update
 
     private void Awake()
-    {    }
+    {
+        LoadInfo();
+    }
     void Start()
     {
         ui_level = GameObject.Find("UI_level").transform.GetComponent<TextMeshProUGUI>();
@@ -216,9 +218,22 @@ public class PlayerBehavior : Interactable
         PlayerInfo.instance.current_XP = player_info.current_XP;
         PlayerInfo.instance.cur_health = player_info.cur_health;
         PlayerInfo.instance.max_health = player_info.max_health;
-        PlayerInfo.instance.name = player_info.name;
+        PlayerInfo.instance.player_name = player_info.player_name;
         PlayerInfo.instance.current_level = player_info.current_level;
         PlayerInfo.instance.gold = player_info.gold;
+    }
+
+    void LoadInfo() 
+    {
+        if (PlayerInfo.instance.current_level != 0)
+        {
+            player_info.current_XP = PlayerInfo.instance.current_XP;
+            player_info.cur_health = PlayerInfo.instance.cur_health;
+            player_info.max_health = PlayerInfo.instance.max_health;
+            player_info.player_name = PlayerInfo.instance.player_name;
+            player_info.current_level = PlayerInfo.instance.current_level;
+            player_info.gold = PlayerInfo.instance.gold;
+        }
     }
 
 #if UNITY_EDITOR
