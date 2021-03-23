@@ -44,9 +44,14 @@ public class PlayerBehavior : Interactable
 
     private float GetHealthPercent() 
     {
-        return (player_info.cur_health/player_info.max_health)*100;
+        return (float)player_info.cur_health/player_info.max_health;
     }
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
     void Start()
     {
         ui_level = GameObject.Find("UI_level").transform.GetComponent<TextMeshProUGUI>();
