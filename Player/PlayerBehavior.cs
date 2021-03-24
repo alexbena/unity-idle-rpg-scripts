@@ -52,6 +52,8 @@ public class PlayerBehavior : Interactable
     // Update is called once per frame
     void Update()
     {
+        // Do attack on click and implement spells
+
         if (actual_target == null)
         {
             attacking = false;
