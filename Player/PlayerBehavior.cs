@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerBehavior : Interactable
 {
@@ -39,35 +35,23 @@ public class PlayerBehavior : Interactable
     {
         return (float)player_info.cur_health/player_info.max_health;
     }
-    // Start is called before the first frame update
-
 
     void Start()
     {
         level_system = GetComponent<LevelSystem>();
         LoadInfo();
-        ui_level = GUIManager.instance.ui_level.GetComponent<TextMeshProUGUI>();
-        ui_health_bar_text = GUIManager.instance.ui_health_bar_text.GetComponent<TextMeshProUGUI>();
-        ui_health_bar = GUIManager.instance.ui_health_bar;
-        ui_gold = GUIManager.instance.ui_gold.GetComponent<Text>();
+
         dead = false;
         anim = GetComponent<Animator>();
         actual_target = null;
         audio_sfx = GetComponent<AudioSource>();
 
-        ui_health_bar.transform.localScale = new Vector3(GetHealthPercent(), 1, 1);
-        ui_health_bar_text.text = player_info.cur_health + " / " + player_info.max_health;
+        GUIManager.instance.UpdateHealth(player_info.cur_health, player_info.max_health, GetHealthPercent());
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (ui_level.text != player_info.current_level.ToString())
-            LevelUP();
-
-        ui_level.text = player_info.current_level.ToString();
-        ui_gold.text = player_info.gold.ToString();
-
         if (actual_target == null)
         {
             attacking = false;
@@ -164,6 +148,8 @@ public class PlayerBehavior : Interactable
             player_info.cur_health = 0;
             Die();
         }
+
+        GUIManager.instance.UpdateHealth(player_info.cur_health, player_info.max_health, GetHealthPercent());
     }
 
     public bool WillDie(int damage)
@@ -185,6 +171,7 @@ public class PlayerBehavior : Interactable
     public void AddGold(int gold) 
     {
         player_info.gold += gold;
+        GUIManager.instance.UpdateGold(player_info.gold);
     }
 
     public void LevelUP() 

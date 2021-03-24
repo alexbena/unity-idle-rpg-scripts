@@ -20,7 +20,7 @@ public class LevelSystem : MonoBehaviour
     public void AddXP(int xp_amount) 
     {
         CalculateLevel(xp_amount);
-        GUIManager.instance.UpdateLevel(reverse_fill_amount);
+        GUIManager.instance.UpdateLevel(current_level, reverse_fill_amount);
     }
 
     void CalculateLevel(int amount) 

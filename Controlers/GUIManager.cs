@@ -1,13 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GUIManager : MonoBehaviour
 {
     public static GUIManager instance;
-    PlayerBehavior player_script;
 
     void Awake()
     {
@@ -16,10 +13,9 @@ public class GUIManager : MonoBehaviour
 
     private void Start()
     {
-        player_script = PlayerManager.instance.GetComponent<PlayerBehavior>();
-        ui_level_text = GUIManager.instance.GO_ui_level.GetComponent<TextMeshProUGUI>();
-        ui_health_bar_text = GUIManager.instance.GO_ui_health_bar_text.GetComponent<TextMeshProUGUI>();
-        ui_gold = GUIManager.instance.GO_ui_gold.GetComponent<Text>();
+        ui_level_text = instance.GO_ui_level.GetComponent<TextMeshProUGUI>();
+        ui_health_bar_text = instance.GO_ui_health_bar_text.GetComponent<TextMeshProUGUI>();
+        ui_gold = instance.GO_ui_gold.GetComponent<Text>();
     }
 
 
@@ -37,21 +33,21 @@ public class GUIManager : MonoBehaviour
     public GameObject GO_ui_gold;
     Text ui_gold;
 
-    public void UpdateHealth() 
+    public void UpdateHealth(int current_health, int max_health, float percent) 
     {
-        ui_health_bar_text.text = player_script.player_info.cur_health + " / " + player_script.player_info.max_health;
-        GO_ui_health_bar.transform.localScale = new Vector3(player_script.GetHealthPercent(), 1, 1);
+        ui_health_bar_text.text = current_health + " / " + max_health;
+        GO_ui_health_bar.transform.localScale = new Vector3(percent, 1, 1);
     } 
 
-    public void UpdateLevel(float fill_amount) 
+    public void UpdateLevel(int current_level, float fill_amount) 
     {
-        ui_level_text.text = player_script.player_info.current_level.ToString();
+        ui_level_text.text = current_level.ToString();
         GO_ui_fill_bar.transform.localScale = new Vector3(fill_amount, 1, 1);
 
     }
 
-    public void UpdateGold()
+    public void UpdateGold(int amount)
     {
-        ui_gold.text = player_script.player_info.gold.ToString();
+        ui_gold.text = amount.ToString();
     }
 }
