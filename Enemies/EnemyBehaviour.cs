@@ -159,7 +159,7 @@ public class EnemyBehaviour : Interactable
 
     public void GiveXP() 
     {
-        GameObject.FindGameObjectWithTag("GameController").GetComponent<LevelSystem>().AddXP(xp_drop); // Change to GameController Manager
+        PlayerManager.instance.player.GetComponent<PlayerBehavior>().level_system.AddXP(xp_drop); // Change to GameController Manager
     }
 
     public void GiveDrop() 

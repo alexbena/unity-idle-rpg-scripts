@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI; //QUITAR
+﻿using UnityEngine;
 
 public class LevelSystem : MonoBehaviour
 {
@@ -27,15 +24,8 @@ public class LevelSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = PlayerManager.instance.player;
+        player = gameObject;
         ui_fill_bar = GameObject.Find("UI_fill_bar");
-        //InvokeRepeating("AddXP", 1f, 1f);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void AddXP(int xp_amount) 
@@ -66,5 +56,7 @@ public class LevelSystem : MonoBehaviour
         stat_points = 5 * (current_level - 1);
         skill_points = 15 * (current_level - 1);
 
+        player.GetComponent<PlayerBehavior>().player_info.current_XP = current_xp;
     }
+
 }

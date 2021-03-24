@@ -7,12 +7,10 @@ using UnityEngine.UI;
 
 public class PlayerBehavior : Interactable
 {
-
     public BaseClass player_info;
 
     public bool dead;
     public bool attacking;
-
     Animator anim;
 
     public float look_radius;
@@ -41,6 +39,7 @@ public class PlayerBehavior : Interactable
     GameObject[] enemies;
     GameObject actual_target;
 
+    public LevelSystem level_system;
 
     private float GetHealthPercent() 
     {
@@ -50,10 +49,13 @@ public class PlayerBehavior : Interactable
 
     private void Awake()
     {
-        LoadInfo();
+        // Load LevelSystem
+        level_system = GetComponent<LevelSystem>();
     }
+
     void Start()
     {
+        LoadInfo();
         ui_level = GameObject.Find("UI_level").transform.GetComponent<TextMeshProUGUI>();
         ui_health_bar_text = GameObject.Find("UI_health_bar_text").transform.GetComponent<TextMeshProUGUI>();
         ui_health_bar = GameObject.Find("UI_health_bar");
@@ -65,7 +67,6 @@ public class PlayerBehavior : Interactable
 
         ui_health_bar.transform.localScale = new Vector3(GetHealthPercent(), 1, 1);
         ui_health_bar_text.text = player_info.cur_health + " / " + player_info.max_health;
-
     }
 
     // Update is called once per frame
@@ -215,24 +216,47 @@ public class PlayerBehavior : Interactable
 
     void SaveInfo()
     {
-        PlayerInfo.instance.current_XP = player_info.current_XP;
+        // Player
         PlayerInfo.instance.cur_health = player_info.cur_health;
         PlayerInfo.instance.max_health = player_info.max_health;
         PlayerInfo.instance.player_name = player_info.player_name;
-        PlayerInfo.instance.current_level = player_info.current_level;
         PlayerInfo.instance.gold = player_info.gold;
+        PlayerInfo.instance.current_xp = player_info.current_XP;        // Get this from player
+        PlayerInfo.instance.current_level = player_info.current_level;  // Get this from player
+
+        // Level System
+        PlayerInfo.instance.xp_for_next_level = level_system.xp_for_next_level;
+        PlayerInfo.instance.xp_difference_next_level = level_system.xp_difference_next_level;
+        PlayerInfo.instance.total_xp_difference = level_system.total_xp_difference;
+        PlayerInfo.instance.fill_amount = level_system.fill_amount;
+        PlayerInfo.instance.reverse_fill_amount = level_system.reverse_fill_amount;
+        PlayerInfo.instance.stat_points = level_system.stat_points;
+        PlayerInfo.instance.skill_points = level_system.skill_points;
     }
 
     void LoadInfo() 
     {
         if (PlayerInfo.instance.current_level != 0)
         {
-            player_info.current_XP = PlayerInfo.instance.current_XP;
+            // Player          
             player_info.cur_health = PlayerInfo.instance.cur_health;
             player_info.max_health = PlayerInfo.instance.max_health;
-            player_info.player_name = PlayerInfo.instance.player_name;
-            player_info.current_level = PlayerInfo.instance.current_level;
+            player_info.player_name = PlayerInfo.instance.player_name;         
             player_info.gold = PlayerInfo.instance.gold;
+            player_info.current_XP = PlayerInfo.instance.current_xp;
+            player_info.current_level = PlayerInfo.instance.current_level;
+
+            // Level System
+            level_system.current_xp = player_info.current_XP;
+            level_system.current_level = player_info.current_level;
+            level_system.xp_for_next_level = PlayerInfo.instance.xp_for_next_level;
+            level_system.xp_difference_next_level = PlayerInfo.instance.xp_difference_next_level;
+            level_system.total_xp_difference = PlayerInfo.instance.total_xp_difference;
+            level_system.fill_amount = PlayerInfo.instance.fill_amount;
+            level_system.reverse_fill_amount = PlayerInfo.instance.reverse_fill_amount;
+            level_system.stat_points = PlayerInfo.instance.stat_points;
+            level_system.skill_points = PlayerInfo.instance.skill_points;
+            level_system.AddXP(0);
         }
     }
 
