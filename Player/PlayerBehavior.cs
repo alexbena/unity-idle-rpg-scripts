@@ -18,12 +18,6 @@ public class PlayerBehavior : Interactable
     public float next_attack;
     public float attack_rate = 1f;
 
-    // GUI MAKE THIS INTO CONTROLLER
-    private TextMeshProUGUI ui_level;
-    private TextMeshProUGUI ui_health_bar_text;
-    private GameObject ui_health_bar;
-    private Text ui_gold;
-
     // Get this out
     public AudioClip hit_sfx;
     public AudioClip critical_hit_sfx;
@@ -41,25 +35,21 @@ public class PlayerBehavior : Interactable
 
     public LevelSystem level_system;
 
-    private float GetHealthPercent() 
+    public float GetHealthPercent() 
     {
         return (float)player_info.cur_health/player_info.max_health;
     }
     // Start is called before the first frame update
 
-    private void Awake()
-    {
-        // Load LevelSystem
-        level_system = GetComponent<LevelSystem>();
-    }
 
     void Start()
     {
+        level_system = GetComponent<LevelSystem>();
         LoadInfo();
-        ui_level = GameObject.Find("UI_level").transform.GetComponent<TextMeshProUGUI>();
-        ui_health_bar_text = GameObject.Find("UI_health_bar_text").transform.GetComponent<TextMeshProUGUI>();
-        ui_health_bar = GameObject.Find("UI_health_bar");
-        ui_gold = GameObject.Find("UI_gold").GetComponent<Text>();
+        ui_level = GUIManager.instance.ui_level.GetComponent<TextMeshProUGUI>();
+        ui_health_bar_text = GUIManager.instance.ui_health_bar_text.GetComponent<TextMeshProUGUI>();
+        ui_health_bar = GUIManager.instance.ui_health_bar;
+        ui_gold = GUIManager.instance.ui_gold.GetComponent<Text>();
         dead = false;
         anim = GetComponent<Animator>();
         actual_target = null;
@@ -174,9 +164,6 @@ public class PlayerBehavior : Interactable
             player_info.cur_health = 0;
             Die();
         }
-
-        ui_health_bar_text.text = player_info.cur_health + " / " + player_info.max_health;
-        ui_health_bar.transform.localScale = new Vector3(GetHealthPercent(), 1, 1);
     }
 
     public bool WillDie(int damage)
@@ -216,46 +203,48 @@ public class PlayerBehavior : Interactable
 
     void SaveInfo()
     {
+        GameObject save_data = GameObject.FindGameObjectWithTag("SaveData");
         // Player
-        PlayerInfo.instance.cur_health = player_info.cur_health;
-        PlayerInfo.instance.max_health = player_info.max_health;
-        PlayerInfo.instance.player_name = player_info.player_name;
-        PlayerInfo.instance.gold = player_info.gold;
-        PlayerInfo.instance.current_xp = player_info.current_XP;        // Get this from player
-        PlayerInfo.instance.current_level = player_info.current_level;  // Get this from player
+        save_data.GetComponent<PlayerInfo>().cur_health = player_info.cur_health;
+        save_data.GetComponent<PlayerInfo>().max_health = player_info.max_health;
+        save_data.GetComponent<PlayerInfo>().player_name = player_info.player_name;
+        save_data.GetComponent<PlayerInfo>().gold = player_info.gold;
+        save_data.GetComponent<PlayerInfo>().current_xp = player_info.current_XP;        // Get this from player
+        save_data.GetComponent<PlayerInfo>().current_level = player_info.current_level;  // Get this from player
 
         // Level System
-        PlayerInfo.instance.xp_for_next_level = level_system.xp_for_next_level;
-        PlayerInfo.instance.xp_difference_next_level = level_system.xp_difference_next_level;
-        PlayerInfo.instance.total_xp_difference = level_system.total_xp_difference;
-        PlayerInfo.instance.fill_amount = level_system.fill_amount;
-        PlayerInfo.instance.reverse_fill_amount = level_system.reverse_fill_amount;
-        PlayerInfo.instance.stat_points = level_system.stat_points;
-        PlayerInfo.instance.skill_points = level_system.skill_points;
+        save_data.GetComponent<PlayerInfo>().xp_for_next_level = level_system.xp_for_next_level;
+        save_data.GetComponent<PlayerInfo>().xp_difference_next_level = level_system.xp_difference_next_level;
+        save_data.GetComponent<PlayerInfo>().total_xp_difference = level_system.total_xp_difference;
+        save_data.GetComponent<PlayerInfo>().fill_amount = level_system.fill_amount;
+        save_data.GetComponent<PlayerInfo>().reverse_fill_amount = level_system.reverse_fill_amount;
+        save_data.GetComponent<PlayerInfo>().stat_points = level_system.stat_points;
+        save_data.GetComponent<PlayerInfo>().skill_points = level_system.skill_points;
     }
 
     void LoadInfo() 
     {
-        if (PlayerInfo.instance.current_level != 0)
+        GameObject save_data = GameObject.FindGameObjectWithTag("SaveData");
+        if (save_data.GetComponent<PlayerInfo>().current_level != 0)
         {
             // Player          
-            player_info.cur_health = PlayerInfo.instance.cur_health;
-            player_info.max_health = PlayerInfo.instance.max_health;
-            player_info.player_name = PlayerInfo.instance.player_name;         
-            player_info.gold = PlayerInfo.instance.gold;
-            player_info.current_XP = PlayerInfo.instance.current_xp;
-            player_info.current_level = PlayerInfo.instance.current_level;
+            player_info.cur_health = save_data.GetComponent<PlayerInfo>().cur_health;
+            player_info.max_health = save_data.GetComponent<PlayerInfo>().max_health;
+            player_info.player_name = save_data.GetComponent<PlayerInfo>().player_name;         
+            player_info.gold = save_data.GetComponent<PlayerInfo>().gold;
+            player_info.current_XP = save_data.GetComponent<PlayerInfo>().current_xp;
+            player_info.current_level = save_data.GetComponent<PlayerInfo>().current_level;
 
             // Level System
             level_system.current_xp = player_info.current_XP;
             level_system.current_level = player_info.current_level;
-            level_system.xp_for_next_level = PlayerInfo.instance.xp_for_next_level;
-            level_system.xp_difference_next_level = PlayerInfo.instance.xp_difference_next_level;
-            level_system.total_xp_difference = PlayerInfo.instance.total_xp_difference;
-            level_system.fill_amount = PlayerInfo.instance.fill_amount;
-            level_system.reverse_fill_amount = PlayerInfo.instance.reverse_fill_amount;
-            level_system.stat_points = PlayerInfo.instance.stat_points;
-            level_system.skill_points = PlayerInfo.instance.skill_points;
+            level_system.xp_for_next_level = save_data.GetComponent<PlayerInfo>().xp_for_next_level;
+            level_system.xp_difference_next_level = save_data.GetComponent<PlayerInfo>().xp_difference_next_level;
+            level_system.total_xp_difference = save_data.GetComponent<PlayerInfo>().total_xp_difference;
+            level_system.fill_amount = save_data.GetComponent<PlayerInfo>().fill_amount;
+            level_system.reverse_fill_amount = save_data.GetComponent<PlayerInfo>().reverse_fill_amount;
+            level_system.stat_points = save_data.GetComponent<PlayerInfo>().stat_points;
+            level_system.skill_points = save_data.GetComponent<PlayerInfo>().skill_points;
             level_system.AddXP(0);
         }
     }

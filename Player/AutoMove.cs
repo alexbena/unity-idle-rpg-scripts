@@ -13,6 +13,7 @@ public class AutoMove : MonoBehaviour
     public float speed;
     float proximity_radius = 1f;
     private Animator anim;
+    private string active_route_name;
 
 
     void Start()
@@ -22,6 +23,11 @@ public class AutoMove : MonoBehaviour
         List<GameObject> new_list = new List<GameObject>(main_routes);
         routes.Add("route_grind", new_list);
         this.active_route = new_list;
+        active_route_name = "route_grind";
+
+        main_routes = GameObject.FindGameObjectsWithTag("ROUTE_HOME");
+        new_list = new List<GameObject>(main_routes);
+        routes.Add("route_home", new_list);
     }
 
     void Update()
@@ -39,7 +45,8 @@ public class AutoMove : MonoBehaviour
                 if (current >= active_route.Count) { 
                     current = -1;
                     anim.SetBool("isWalking", false); // Take anims out
-                    AssetsManager.instance.Level_changer.GetComponent<LevelChanger>().FadeToLevel(1);
+                    if(active_route_name == "route_grind")
+                        AssetsManager.instance.Level_changer.GetComponent<LevelChanger>().FadeToLevel(1);
                 }
             }
         }
@@ -53,5 +60,16 @@ public class AutoMove : MonoBehaviour
 
     public void LoadRoute(string route) {
         this.active_route = this.routes[route];
+        active_route_name = route;
+        Move();
+        if (active_route_name == "route_home")
+            StartCoroutine("GoHomeTransition");
+        
+    }
+
+    IEnumerator GoHomeTransition()
+    {
+        yield return new WaitForSeconds(2); // Wait 2 segs
+        AssetsManager.instance.Level_changer.GetComponent<LevelChanger>().FadeToLevel(0);
     }
 }

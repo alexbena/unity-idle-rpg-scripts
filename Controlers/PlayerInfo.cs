@@ -10,8 +10,19 @@ public class PlayerInfo : MonoBehaviour
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-        instance = this;
+        int hotfix_placeholder = FindObjectsOfType<PlayerInfo>().Length;
+        if (hotfix_placeholder != 1)
+        {
+            Destroy(gameObject);
+        }
+        else 
+        { 
+            DontDestroyOnLoad(gameObject);
+            instance = this;
+            gameObject.tag = "SaveData";
+        }
+            
+        
     }
 
     public enum genders

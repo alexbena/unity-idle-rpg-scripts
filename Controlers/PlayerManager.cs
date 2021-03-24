@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour
 
     void Awake()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         instance = this;
     }
 
