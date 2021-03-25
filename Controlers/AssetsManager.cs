@@ -16,4 +16,6 @@ public class AssetsManager : MonoBehaviour
 
     public GameObject popup_damage;
     public GameObject Level_changer;
+    public GameObject game_controller;
+    public GameObject procedural_generator;
 }

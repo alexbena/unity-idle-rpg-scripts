@@ -45,8 +45,8 @@ public class AutoMove : MonoBehaviour
                 if (current >= active_route.Count) { 
                     current = -1;
                     anim.SetBool("isWalking", false); // Take anims out
-                    if(active_route_name == "route_grind")
-                        AssetsManager.instance.Level_changer.GetComponent<LevelChanger>().FadeToLevel(1);
+                    //if(active_route_name == "route_grind")
+                       // AssetsManager.instance.Level_changer.GetComponent<LevelChanger>().FadeToLevel(1);
                 }
             }
         }
@@ -71,5 +71,10 @@ public class AutoMove : MonoBehaviour
     {
         yield return new WaitForSeconds(2); // Wait 2 segs
         AssetsManager.instance.Level_changer.GetComponent<LevelChanger>().FadeToLevel(0);
+    }
+
+    public void AddWP(string route, GameObject wp) 
+    {
+        routes[route].Add(wp);
     }
 }
