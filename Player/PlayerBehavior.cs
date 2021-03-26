@@ -31,9 +31,9 @@ public class PlayerBehavior : Interactable
 
     public LevelSystem level_system;
 
-    public float GetHealthPercent() 
+    public float GetHealthPercent()
     {
-        return (float)player_info.cur_health/player_info.max_health;
+        return (float)player_info.cur_health / player_info.max_health;
     }
 
     void Start()
@@ -47,6 +47,9 @@ public class PlayerBehavior : Interactable
         audio_sfx = GetComponent<AudioSource>();
 
         GUIManager.instance.UpdateHealth(player_info.cur_health, player_info.max_health, GetHealthPercent());
+        GUIManager.instance.UpdateLevel(player_info.current_level, level_system.reverse_fill_amount);
+        GUIManager.instance.UpdateStatsPoints(player_info.stat_points);
+        GUIManager.instance.UpdateStats(player_info.health, player_info.strength, player_info.defense);
     }
 
     // Update is called once per frame
@@ -66,13 +69,13 @@ public class PlayerBehavior : Interactable
             actual_target = GetNearEnemy();
         }
         else {
-            transform.LookAt(actual_target.transform.position);              
+            transform.LookAt(actual_target.transform.position);
             Attack();
         }
-        
+
     }
 
-    void Attack() 
+    void Attack()
     {
         if (Vector3.Distance(transform.position, actual_target.transform.position) <= attack_radius)
         {
@@ -81,16 +84,13 @@ public class PlayerBehavior : Interactable
             if (Time.time > next_attack)
             {
                 next_attack = Time.time + attack_rate;
-                int attack_dmg = Random.Range(5, 30);
-                bool is_critial = false;
-                if (attack_dmg > 20)
+                int attack_dmg = Random.Range(7 + player_info.strength, 10 + player_info.strength); // TODO Statify values
+                bool is_critial = Random.Range(1, 20) > 5 ? false: true;
+                if (is_critial)
                 {
-                    is_critial = true;
+                    attack_dmg = (int)System.Math.Ceiling(attack_dmg * 1.5f);
                 }
-                else
-                {
-                    is_critial = false;
-                }
+
                 anim.SetTrigger("Attack");
 
                 DamagePopUp.Create(actual_target.transform.position, attack_dmg, is_critial);
@@ -112,18 +112,18 @@ public class PlayerBehavior : Interactable
                 // HIT
                 actual_target.GetComponent<EnemyBehaviour>().GetHit(attack_dmg); // this needs correction
             }
-            
+
         }
     }
 
-    GameObject GetNearEnemy() 
+    GameObject GetNearEnemy()
     {
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
-        foreach (GameObject e in enemies) 
+        foreach (GameObject e in enemies)
         {
             float distance = Vector3.Distance(transform.position, e.transform.position);
-            if (distance <= look_radius && e.GetComponent<EnemyBehaviour>().IsAlive()) 
+            if (distance <= look_radius && e.GetComponent<EnemyBehaviour>().IsAlive())
             {
                 return e;
             }
@@ -140,17 +140,18 @@ public class PlayerBehavior : Interactable
     public override void GetHit(int damage)
     {
         base.GetHit(damage);
-
-        if (!WillDie(damage))
+        // TODO This needs to be on parent for heritance
+        int real_damage = (int)System.Math.Ceiling(damage - (damage * (player_info.defense/100f)));
+       
+        if (!WillDie(real_damage))
         {
-            player_info.cur_health -= damage;
+            player_info.cur_health -= real_damage;
         }
         else
         {
             player_info.cur_health = 0;
             Die();
         }
-
         GUIManager.instance.UpdateHealth(player_info.cur_health, player_info.max_health, GetHealthPercent());
     }
 
@@ -159,30 +160,79 @@ public class PlayerBehavior : Interactable
         return (player_info.cur_health - damage) <= 0 ? true : false;
     }
 
-    public void Die() 
+    public void Die()
     {
         dead = true;
         Destroy(this.gameObject);
     }
 
-    public bool IsAlive() 
+    public bool IsAlive()
     {
         return !dead;
     }
 
-    public void AddGold(int gold) 
+    public void AddGold(int gold)
     {
         player_info.gold += gold;
         GUIManager.instance.UpdateGold(player_info.gold);
     }
 
-    public void LevelUP() 
+    public void LevelUP()
     {
         GameObject effect = (GameObject)Instantiate(level_up_vfx, transform.position, Quaternion.identity);
         Destroy(effect, 1.5f);
         audio_sfx.clip = level_up_sfx;
         audio_sfx.volume = 0.15f;
         audio_sfx.Play();
+        GUIManager.instance.UpdateStatsPoints(player_info.stat_points);
+
+        // FULL heal
+        Heal(-1); // Negative means full health
+
+        // TODO RESEARCH THIS
+        player_info.health = (int)System.Math.Ceiling(player_info.health * 1.2f);
+        player_info.strength = (int)System.Math.Ceiling(player_info.strength * 1.2f);
+        player_info.defense = (int)System.Math.Ceiling(player_info.defense * 1.2f);
+        GUIManager.instance.UpdateHealth(player_info.cur_health, player_info.max_health, GetHealthPercent());
+        GUIManager.instance.UpdateStats(player_info.health, player_info.strength, player_info.defense);
+    }
+
+    // STATS
+    // TODO research concurrency problems on insta multiple updates
+    public void UpgradeHealth()
+    {
+        if (player_info.stat_points > 0)
+        {
+            player_info.health++;
+            player_info.max_health = (int)System.Math.Ceiling(player_info.max_health * 1.2f); // this must be splited on function
+            player_info.stat_points--;
+            GUIManager.instance.UpdateStats(player_info.health, player_info.strength, player_info.defense);
+            GUIManager.instance.UpdateStatsPoints(player_info.stat_points);
+            GUIManager.instance.UpdateHealth(player_info.cur_health, player_info.max_health, GetHealthPercent());
+        }
+
+    }
+
+    public void UpgradeStrength()
+    {
+        if (player_info.stat_points > 0)
+        {
+            player_info.strength++;
+            player_info.stat_points--;
+            GUIManager.instance.UpdateStats(player_info.health, player_info.strength, player_info.defense);
+            GUIManager.instance.UpdateStatsPoints(player_info.stat_points);
+        }
+    }
+
+    public void UpgradeDefense()
+    {
+        if (player_info.stat_points > 0)
+        {
+            player_info.defense++;
+            player_info.stat_points--;
+            GUIManager.instance.UpdateStats(player_info.health, player_info.strength, player_info.defense);
+            GUIManager.instance.UpdateStatsPoints(player_info.stat_points);
+        }
     }
 
     private void OnDestroy()
@@ -198,8 +248,10 @@ public class PlayerBehavior : Interactable
         save_data.GetComponent<PlayerInfo>().max_health = player_info.max_health;
         save_data.GetComponent<PlayerInfo>().player_name = player_info.player_name;
         save_data.GetComponent<PlayerInfo>().gold = player_info.gold;
-        save_data.GetComponent<PlayerInfo>().current_xp = player_info.current_XP;        // Get this from player
-        save_data.GetComponent<PlayerInfo>().current_level = player_info.current_level;  // Get this from player
+        save_data.GetComponent<PlayerInfo>().current_xp = player_info.current_XP;      
+        save_data.GetComponent<PlayerInfo>().current_level = player_info.current_level;
+        save_data.GetComponent<PlayerInfo>().forest_distance = player_info.forest_checkpoint * 10;
+        save_data.GetComponent<PlayerInfo>().forest_checkpoint = player_info.forest_checkpoint;
 
         // Level System
         save_data.GetComponent<PlayerInfo>().xp_for_next_level = level_system.xp_for_next_level;
@@ -211,7 +263,7 @@ public class PlayerBehavior : Interactable
         save_data.GetComponent<PlayerInfo>().skill_points = level_system.skill_points;
     }
 
-    void LoadInfo() 
+    void LoadInfo()
     {
         GameObject save_data = GameObject.FindGameObjectWithTag("SaveData");
         if (save_data.GetComponent<PlayerInfo>().current_level != 0)
@@ -219,10 +271,12 @@ public class PlayerBehavior : Interactable
             // Player          
             player_info.cur_health = save_data.GetComponent<PlayerInfo>().cur_health;
             player_info.max_health = save_data.GetComponent<PlayerInfo>().max_health;
-            player_info.player_name = save_data.GetComponent<PlayerInfo>().player_name;         
+            player_info.player_name = save_data.GetComponent<PlayerInfo>().player_name;
             player_info.gold = save_data.GetComponent<PlayerInfo>().gold;
             player_info.current_XP = save_data.GetComponent<PlayerInfo>().current_xp;
             player_info.current_level = save_data.GetComponent<PlayerInfo>().current_level;
+            player_info.forest_distance = save_data.GetComponent<PlayerInfo>().forest_checkpoint * 10;
+            player_info.forest_checkpoint = save_data.GetComponent<PlayerInfo>().forest_checkpoint;
 
             // Level System
             level_system.current_xp = player_info.current_XP;
@@ -233,9 +287,28 @@ public class PlayerBehavior : Interactable
             level_system.fill_amount = save_data.GetComponent<PlayerInfo>().fill_amount;
             level_system.reverse_fill_amount = save_data.GetComponent<PlayerInfo>().reverse_fill_amount;
             level_system.stat_points = save_data.GetComponent<PlayerInfo>().stat_points;
+            player_info.stat_points = save_data.GetComponent<PlayerInfo>().stat_points;
             level_system.skill_points = save_data.GetComponent<PlayerInfo>().skill_points;
+            player_info.stat_points = save_data.GetComponent<PlayerInfo>().stat_points;
             level_system.AddXP(0);
         }
+    }
+
+    public void Heal(int amount) 
+    {
+        if (amount < 0)
+        {
+            player_info.cur_health = player_info.max_health;
+        }
+        else 
+        {
+            player_info.cur_health += amount;
+            if (player_info.cur_health > player_info.max_health) 
+            {
+                player_info.cur_health = player_info.max_health;
+            }
+        }
+        GUIManager.instance.UpdateHealth(player_info.cur_health, player_info.max_health, GetHealthPercent());
     }
 
 #if UNITY_EDITOR

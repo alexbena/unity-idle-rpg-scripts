@@ -25,14 +25,20 @@ public class BaseClass
     public genders gender;
 
     [Header("Stats")]
+    public int health;
     public int strength;
-    public int endurance;
+    public int defense;
     public int agility;
     public int wisdom;
     public int intelligence;
 
     [Header("Skills")]
-    public int statPoints;
-    public int skillPoints;
+    public int stat_points;
+    public int skill_points;
     // List of skills
+
+
+    // GRIND PROGRESSS
+    public int forest_distance;
+    public int forest_checkpoint;
 }

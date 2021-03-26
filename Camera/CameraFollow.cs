@@ -7,9 +7,9 @@ public class CameraFollow : MonoBehaviour
     [Header("Target")]
     public Transform target;
     [Header("Distances")]
-    [Range(10f,25f)]public float distance = 25f;
-    public float min_distance = 10f;
-    public float max_distance = 25f;
+    [Range(6f,10f)]public float distance = 10f;
+    public float min_distance = 6f;
+    public float max_distance = 10f;
     private Vector3 offset = new Vector3(2.0f, 1.0f, 0.0f);
     [Header("Speeds")]
     public float smooth_speed = 5f;

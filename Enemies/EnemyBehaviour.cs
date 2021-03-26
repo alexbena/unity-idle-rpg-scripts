@@ -20,6 +20,7 @@ public class EnemyBehaviour : Interactable
     public float attack_rate = 1f;
     public int max_health;
     public int cur_health;
+    public int attack_damage = 5;
 
     // DROP (Split in drop table)
     public int xp_drop = 20;
@@ -98,7 +99,7 @@ public class EnemyBehaviour : Interactable
                 audio_sfx.Play();
 
                 // HIT
-                PlayerManager.instance.player.GetComponent<PlayerBehavior>().GetHit(20); // this needs correction
+                PlayerManager.instance.player.GetComponent<PlayerBehavior>().GetHit(attack_damage); // this needs correction
             }
             this.walking = false;
         }

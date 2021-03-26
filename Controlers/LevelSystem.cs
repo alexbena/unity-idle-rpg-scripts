@@ -33,6 +33,11 @@ public class LevelSystem : MonoBehaviour
         {
             current_level = temp_cur_level;
             PlayerManager.instance.player.GetComponent<PlayerBehavior>().player_info.current_level = current_level;
+            stat_points = 5;
+            skill_points = 15;
+            PlayerManager.instance.player.GetComponent<PlayerBehavior>().player_info.skill_points += skill_points;
+            PlayerManager.instance.player.GetComponent<PlayerBehavior>().player_info.stat_points += stat_points;
+            PlayerManager.instance.player.GetComponent<PlayerBehavior>().LevelUP();
         }
 
         xp_for_next_level = base_XP * current_level * current_level;
@@ -41,9 +46,6 @@ public class LevelSystem : MonoBehaviour
 
         fill_amount = (float) xp_difference_next_level / (float) total_xp_difference;
         reverse_fill_amount = 1 - fill_amount;
-
-        stat_points = 5 * (current_level - 1);
-        skill_points = 15 * (current_level - 1);
 
         PlayerManager.instance.player.GetComponent<PlayerBehavior>().player_info.current_XP = current_xp;
     }
